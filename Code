@@ -1,0 +1,110 @@
+//Code.
+#include <iostream>
+using namespace std;
+
+#define STACKSIZE 3
+struct stack{
+	int top;
+	int items[STACKSIZE];
+};
+
+void initstack(struct stack *);
+int isempty(struct stack *);
+int isfull(struct stack *);
+void push(struct stack *, int x);
+int pop(struct stack *);
+void printstack (struct stack * );
+void stack_reverse(struct stack *, struct stack *);
+
+void initstack(struct stack *ps)
+{
+	ps->top==-1;
+}
+
+int isempty(struct stack *ps)
+{
+	if(ps->top==-1)
+	return 1;
+	else 
+	return 0;
+}
+int isfull(struct stack *ps)
+{
+	if(ps->top==STACKSIZE-1)
+	return 1;
+	else
+	return 0;
+}
+int pop(struct stack *ps)
+{
+	if(isempty(ps)==1)
+	{
+		cout<<"Underflow";
+		exit(1);
+	}
+	return ps->items[(ps->top)--];
+}
+void push(struct stack *ps, int x)
+{
+	if(isfull(ps))
+	{
+		cout<<"Overflow.";
+		exit(1);
+	}
+	ps->top++;
+	ps->items[ps->top]=x;
+}
+void printstack(struct stack *ps)
+{
+	int x;
+	struct stack temp;
+	initstack(&temp);
+	while(!isempty(ps))
+	{
+		 x=pop(ps);
+		 cout<<x<<endl;
+		 push(&temp,x);
+	} 
+	while(!isempty(&temp))
+	{
+		 x=pop(&temp);
+		 push(ps,x);
+	}
+	
+}
+void stack_reverse(struct stack *s1, struct stack *s2)
+{
+	struct stack temp;
+	initstack(&temp);
+	cout<<"----Begin Reverse Copy----"<<endl;
+	while(!isempty(s1))
+	{
+		int x=pop(s1);
+		push(&temp,x);
+		push(s2,x);
+		
+	}
+	while(!isempty(&temp))
+	{
+		int x=pop(&temp);
+		push(s1,x);
+	}
+}
+int main(void)
+{
+	struct stack s1,s2;
+	initstack(&s1);
+	initstack(&s2);
+	push(&s1,0);
+	push(&s1,1);
+	push(&s1,2);
+
+	stack_reverse(&s1,&s2);
+	cout<<"Elements in S1:\n";
+	printstack(&s1);
+	cout<<endl;
+	cout<<"Elements in s2:\n";
+	printstack(&s2);
+	system("PAUSE");
+	return 0;
+}
